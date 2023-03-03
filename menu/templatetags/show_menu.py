@@ -1,6 +1,5 @@
 from ..models import MenusModel
 from django import template
-import itertools
 
 
 register = template.Library()
@@ -11,21 +10,21 @@ def render_menu(menu, selected=None):
         len_selected = len(selected)
         i = 0
         for path, option in menu.items():
-            print(selected, option, i)
             # Opened options
             if len_selected > i and selected[i] == option[-1]:
                 i+=1
                 result += '<div class="option" onclick="location.href=\''+path+'\'">' \
-                +'    '*len(option)+'👉  <span style="color: #5da6ff">'+option[-1]+'</span></div>'
+                +'    '*len(option)+'👉  <span class="select">'+option[-1]+'</span></div>'
             # Not opened options
             elif len(option) == 1 or (len_selected >= i and selected[i-1] == option[-2]) or (len_selected > 1 and selected[i-2] == option[-2]):
                 result += '<div class="option" onclick="location.href=\''+path+'\'">' \
                 +'    '*len(option)+'◽  <span>'+option[-1]+'</span></div>'
     else:
-        # Shows main menu if url is wrong
+        # Shows main menu if url is '/' or wrong
         for path, option in menu.items():
-            result += '<div class="option" onclick="location.href=\''+path+'\'">' \
-            +'    '*len(option)+'◽  <span>'+option[-1]+'</span></div>'
+            if len(option) == 1:
+                result += '<div class="option" onclick="location.href=\''+path+'\'">' \
+                +'    '*len(option)+'◽  <span>'+option[-1]+'</span></div>'
     return result
 
 @register.simple_tag

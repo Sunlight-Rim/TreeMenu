@@ -81,3 +81,6 @@
   cursor: pointer;
   background: #0000001c;
 }
+.option .select {
+  color: #5da6ff;
+}
