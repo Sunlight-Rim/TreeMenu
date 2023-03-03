@@ -8,14 +8,11 @@ class MenusModel(models.Model):
     """
     Options in DataBase writing in below format:
     {
-    "http://site.com/one":   "Option 1",
-    "http://site.com/two":   "Option 2",
-    "http://site.com/three": "Option 3",
-    "http://site.com/four":  ["Option 3", "Suboption 1"],
-    "http://site.com/five":  ["Option 3", "Suboption 2"],
-    "http://site.com/six":   ["Option 3", "Suboption 3"],
-    "http://site.com/seven": ["Option 3", "Suboption 3", "Subsuboption 1"],
-    "http://site.com/eight": "Option 4"
+    "http://site.com/one":   ["Option 1"],
+    "http://site.com/two":   ["Option 2"],
+    "http://site.com/three": ["Option 3", "Suboption 1"],
+    "http://site.com/four":  ["Option 3", "Suboption 3", "Subsuboption 1"],
+    "http://site.com/five":  ["Option 4"]
     }
     """
 
