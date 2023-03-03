@@ -4,27 +4,28 @@ from django import template
 
 register = template.Library()
 
-def render_menu(menu, selected=None):
+def render_menu(options, selected=None):
     result = ""
     if selected:
         len_selected = len(selected)
         i = 0
-        for path, option in menu.items():
+        for path, titles in options.items():
             # Opened options
-            if len_selected > i and selected[i] == option[-1]:
+            if len_selected > i and selected[i] == titles[-1]:
                 i+=1
                 result += '<div class="option" onclick="location.href=\''+path+'\'">' \
-                +'    '*len(option)+'👉  <span class="select">'+option[-1]+'</span></div>'
+                +'    '*len(titles)+'👉  <span class="select">'+titles[-1]+'</span></div>'
             # Not opened options
-            elif len(option) == 1 or (len_selected >= i and selected[i-1] == option[-2]) or (len_selected > 1 and selected[i-2] == option[-2]):
+            elif len(titles) == 1 or (len_selected >= i and selected[i-1] == titles[-2]) \
+            or (len_selected > 1 and selected[i-2] == titles[-2]):
                 result += '<div class="option" onclick="location.href=\''+path+'\'">' \
-                +'    '*len(option)+'◽  <span>'+option[-1]+'</span></div>'
+                +'    '*len(titles)+'◽  <span>'+titles[-1]+'</span></div>'
     else:
         # Shows main menu if url is '/' or wrong
-        for path, option in menu.items():
-            if len(option) == 1:
+        for path, titles in options.items():
+            if len(titles) == 1:
                 result += '<div class="option" onclick="location.href=\''+path+'\'">' \
-                +'    '*len(option)+'◽  <span>'+option[-1]+'</span></div>'
+                +'    '*len(titles)+'◽  <span>'+titles[-1]+'</span></div>'
     return result
 
 @register.simple_tag
@@ -32,6 +33,6 @@ def show_menu(menu_name, url):
     # Only one DataBase request
     menus = MenusModel.objects.all()
     # Define a menu, O(1)
-    menu = {o.title: o.options for o in menus}[menu_name]
-    # menu.get(url) defines a selected option, O(1)
-    return render_menu(menu, menu.get(url))
+    options = {o.title: o.options for o in menus}[menu_name]
+    # options.get(url) defines a selected option by url, O(1)
+    return render_menu(options, options.get(url))
