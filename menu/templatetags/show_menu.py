@@ -32,7 +32,7 @@ def render_menu(options, selected=None):
 def show_menu(menu_name, url):
     # Only one DataBase request
     menus = MenusModel.objects.all()
-    # Define a menu, O(1)
-    options = {o.title: o.options for o in menus}[menu_name]
-    # options.get(url) defines a selected option by url, O(1)
+    # Select a menu, O(1)
+    options = {m.title: m.options for m in menus}[menu_name]
+    # options.get(url) determinates a selected option by url, O(1)
     return render_menu(options, options.get(url))
